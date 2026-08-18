@@ -8,21 +8,39 @@ const App = () => {
 
   const [toggle, setToggle] = useState(true);
 
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(JSON.parse(localStorage.getItem("users")) || []);
 
-  console.log(users)
+
+  const [updatedUser, setUpdatedUser] = useState();
+
+  console.log(updatedUser)
+
+
+  const deleteUser = (id)=>{
+    console.log(id)
+    
+    const filterUser = users.filter((user,idx)=>idx != id)
+
+    setUsers(filterUser)
+    localStorage.setItem("users", JSON.stringify(filterUser))
+  }
+
+
+
+
+
 
 
   return (
     <div className='p-6 flex flex-col gap-6'>
-      <NavBar setToggle={setToggle}  />
+      <NavBar setToggle={setToggle} />
       <div>
 
 
         {toggle ? (
           <div className='flex flex-wrap p-2 justify-center gap-10'>
-            {users.map((user)=>{
-              return <UserCard user={user}  />
+            {users.map((user,idx) => {
+              return <UserCard key={idx} setUpdatedUser={setUpdatedUser}  deleteUser={deleteUser} idx={idx} user={user} setToggle={setToggle} />
             })}
           </div>
         )
@@ -30,7 +48,7 @@ const App = () => {
           :
           (
             <div className='flex justify-center'>
-              <CreateProduct setUsers={setUsers} setToggle={setToggle}/>
+              <CreateProduct updatedUser={updatedUser}  users={users} setUsers={setUsers} setToggle={setToggle} />
             </div>
           )
 
