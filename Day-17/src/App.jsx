@@ -1,23 +1,17 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from './components/Navbar';
 import ProductCards from './components/ProductCards';
 import CartScreen from './pages/CartScreen';
+import { MyShop } from './context/MyContext';
 
 const App = () => {
 
-  const [productsData, setProductsData] = useState([]);
+  const  {productsData,setProductsData, isCartOpen, cartItems} = useContext(MyShop);
 
+  // console.log("Cart Items ->",cartItems);
 
-  const [isCartOpen, setIsCartOpen] = useState(false);
-
-  const [cartItems, setcartItems] = useState([]);
-
-  console.log("Cart Items ->",cartItems);
-
-
-
-  console.log(productsData)
+  // console.log(productsData)
 
   const getProductsData = async () => {
     try {
@@ -38,7 +32,7 @@ const App = () => {
   return (
 
     <div className='p-3 flex flex-col gap-10  '>
-      <Navbar setIsCartOpen={setIsCartOpen} />
+      <Navbar/>
 
 
 
@@ -47,7 +41,7 @@ const App = () => {
 
         (
           <div>
-            <CartScreen cartItems={cartItems} />
+            <CartScreen/>
           </div>
         )
 
@@ -57,7 +51,12 @@ const App = () => {
           <div className='flex gap-10 flex-wrap p-3 justify-center'>
             {
               productsData.map((product) => {
-                return <ProductCards setcartItems={setcartItems} product={product} key={product.id} />
+
+                let isInCart = cartItems.find((val)=> val.id === product.id);
+
+                // console.log(isInCart)
+
+                return <ProductCards product={product} key={product.id} isInCart={isInCart} />
               })
             }
           </div>

@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import CartsCards from '../components/CartsCards';
+import { MyShop } from '../context/MyContext';
 
-const CartScreen = ({ cartItems }) => {
+const CartScreen = () => {
+
+  const {cartItems} = useContext(MyShop);
+
+  console.log(cartItems)
+
+
+
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-8">
       <div className="mx-auto max-w-6xl">
@@ -25,52 +34,9 @@ const CartScreen = ({ cartItems }) => {
 
             {/* Cart Items */}
             <div className="space-y-4 lg:col-span-2">
-              {cartItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex flex-col gap-4 rounded-xl bg-white p-4 shadow-sm sm:flex-row sm:items-center"
-                >
-                  {/* Product Image */}
-                  <div className="h-28 w-full shrink-0 overflow-hidden rounded-lg bg-gray-100 sm:w-28">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-
-                  {/* Product Details */}
-                  <div className="flex flex-1 flex-col">
-                    <h2 className="text-lg font-semibold text-gray-800">
-                      {item.title}
-                    </h2>
-
-                    <p className="mt-1 text-lg font-bold text-gray-900">
-                      ₹{item.price}
-                    </p>
-
-                    {/* Quantity */}
-                    <div className="mt-3 flex items-center gap-3">
-                      <button className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-300 text-lg hover:bg-gray-100">
-                        -
-                      </button>
-
-                      <span className="font-medium">
-                        {item.quantity}
-                      </span>
-
-                      <button className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-300 text-lg hover:bg-gray-100">
-                        +
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Remove */}
-                  <button className="self-start text-sm font-medium text-red-500 hover:text-red-600 sm:self-center">
-                    Remove
-                  </button>
-                </div>
-              ))}
+              {cartItems.map((item) => {
+                return <CartsCards key={item.id} item={item}/>
+              })}
             </div>
 
             {/* Cart Summary */}
