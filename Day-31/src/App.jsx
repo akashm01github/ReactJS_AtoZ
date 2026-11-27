@@ -7,7 +7,11 @@ const App = () => {
 
   const [toggle, setToggle] = useState(false);
 
-  const [users, setUsers] = useState([])
+  const [updatedData, setUpdatedData] = useState(null);
+
+  const [users, setUsers] = useState(() => {
+    return JSON.parse(localStorage.getItem("users")) || []
+  })
 
   console.log(users)
 
@@ -31,15 +35,30 @@ const App = () => {
 
   // console.log(myNewInfo.skils)
 
-  
+
+  // ! DELETE USER
+  const deleteUser = (id) => {
+
+    const filterUser = users.filter((val, idx) => {
+      return idx !== id
+    })
+
+    setUsers(filterUser);
+    localStorage.setItem("users", JSON.stringify(filterUser));
+  }
+
+
+
+
+
   return (
     <div className='h-screen p-7'>
-      <Navbar setToggle={setToggle}/>
+      <Navbar setToggle={setToggle} />
       {
-        toggle ? <Form users={users} setUsers={setUsers} setToggle={setToggle}/> : (
+        toggle ? <Form updatedData={updatedData} users={users} setUsers={setUsers} setToggle={setToggle} /> : (
           <div className='flex flex-wrap '>
-            {users.map((user,idx)=>{
-              return <Usercard key={idx} user={user}/>
+            {users.map((user, idx) => {
+              return <Usercard ind={idx} deleteUser={deleteUser} setToggle={setToggle} setUpdatedData={setUpdatedData} key={idx} user={user} />
             })}
           </div>
         )

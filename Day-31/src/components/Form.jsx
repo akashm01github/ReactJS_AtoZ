@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -6,28 +7,40 @@ const inputClass =
 
 const labelClass = 'mb-1.5 block text-sm font-medium text-stone-700'
 
-const Form = ({ users, setUsers, setToggle }) => {
+const Form = ({ users, setUsers, setToggle, updatedData }) => {
 
-  const { register, reset, handleSubmit, formState: { errors } } = useForm();
+  const { register, reset, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: updatedData
+  });
 
+  //! CREATE FUNCTIONALITY 
   const formSubmit = (userData) => {
 
-    //! STATE UPDATE ASYNCHRONOUS 
+    if (updatedData) {
+      const updatedUser = users.map((user)=>{
+        return user.id === userData.id ? {...userData} : user
+      })
+      setUsers(updatedUser);
 
-    const newUser = [...users, userData];
-     
-    setUsers(newUser);
-    localStorage.setItem("users", JSON.stringify(newUser))
-    reset();
-    setToggle((prev) => !prev)
+      localStorage.setItem("users",JSON.stringify(updatedUser))
+      setToggle((prev) => !prev)
+    }
+    else {
+      //! STATE UPDATE ASYNCHRONOUS 
+      const newUser = [...users, {...userData, id:nanoid()}];
 
+      setUsers(newUser);
+      localStorage.setItem("users", JSON.stringify(newUser))
+      reset();
+      setToggle((prev) => !prev)
 
+      //! LOCAL-STORAGE GIVE BLANK ARRAY  
+      // setUsers([...users, userData]);
+      // localStorage.setItem("users", JSON.stringify(users))
+      // reset();
+      // setToggle((prev)=>!prev)
+    }
 
-    //! LOCAL-STORAGE GIVE BLANK ARRAY  
-    // setUsers([...users, userData]);
-    // localStorage.setItem("users", JSON.stringify(users))
-    // reset();
-    // setToggle((prev)=>!prev)
   }
 
   return (

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Usercard = ({user}) => {
+const Usercard = ({user, deleteUser,ind, setUpdatedData, setToggle}) => {
 
 
 
@@ -28,10 +28,13 @@ const Usercard = ({user}) => {
       </dl>
 
       <div className="mt-6 flex gap-3">
-        <button className="flex-1 rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
+        <button onClick={()=>deleteUser(ind)} className="flex-1 rounded-lg border border-red-200 px-4 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400">
           Delete
         </button>
-        <button className="flex-1 rounded-lg bg-teal-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-teal-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2">
+        <button onClick={()=>{
+          setUpdatedData(user);
+          setToggle((prev)=>!prev)
+        }} className="flex-1 rounded-lg bg-teal-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-teal-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2">
           Edit
         </button>
       </div>
