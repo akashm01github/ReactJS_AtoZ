@@ -6,14 +6,28 @@ const inputClass =
 
 const labelClass = 'mb-1.5 block text-sm font-medium text-stone-700'
 
-const Form = ({ setUsers,setToggle }) => {
+const Form = ({ users, setUsers, setToggle }) => {
 
   const { register, reset, handleSubmit, formState: { errors } } = useForm();
 
   const formSubmit = (userData) => {
-    setUsers((prev)=>[...prev, userData]);
+
+    //! STATE UPDATE ASYNCHRONOUS 
+
+    const newUser = [...users, userData];
+     
+    setUsers(newUser);
+    localStorage.setItem("users", JSON.stringify(newUser))
     reset();
-    setToggle((prev)=>!prev)
+    setToggle((prev) => !prev)
+
+
+
+    //! LOCAL-STORAGE GIVE BLANK ARRAY  
+    // setUsers([...users, userData]);
+    // localStorage.setItem("users", JSON.stringify(users))
+    // reset();
+    // setToggle((prev)=>!prev)
   }
 
   return (
@@ -24,25 +38,25 @@ const Form = ({ setUsers,setToggle }) => {
       <form onSubmit={handleSubmit(formSubmit)} className="mt-6 space-y-4">
         <div>
           <label htmlFor="name" className={labelClass}>Name</label>
-          <input {...register("userName", {required: "User Name Is Required"})} id="name" type="text" placeholder="Enter the User Name" className={inputClass} />
+          <input {...register("userName", { required: "User Name Is Required" })} id="name" type="text" placeholder="Enter the User Name" className={inputClass} />
           {errors.userName && <p className='text-red-600 mt-2'>{errors.userName.message}</p>}
         </div>
 
         <div>
           <label htmlFor="email" className={labelClass}>Email</label>
-          <input {...register("email", {required: "User Email Is Required"})} id="email" type="text" placeholder="Enter the User Email Id" className={inputClass} />
+          <input {...register("email", { required: "User Email Is Required" })} id="email" type="text" placeholder="Enter the User Email Id" className={inputClass} />
           {errors.email && <p className='text-red-600 mt-2'>{errors.email.message}</p>}
         </div>
 
         <div>
           <label htmlFor="mobile" className={labelClass}>Mobile number</label>
-          <input {...register("mobile", {required: "User Mobile Is Required"})} id="mobile" type="text" placeholder="Enter the User Mobile Number" className={inputClass} />
+          <input {...register("mobile", { required: "User Mobile Is Required" })} id="mobile" type="text" placeholder="Enter the User Mobile Number" className={inputClass} />
           {errors.mobile && <p className='text-red-600 mt-2'>{errors.mobile.message}</p>}
         </div>
 
         <div>
           <label htmlFor="image" className={labelClass}>Image URL</label>
-          <input {...register("image", {required: "User Image Is Required"})} id="image" type="text" placeholder="Enter the User Image URL" className={inputClass} />
+          <input {...register("image", { required: "User Image Is Required" })} id="image" type="text" placeholder="Enter the User Image URL" className={inputClass} />
           {errors.image && <p className='text-red-600 mt-2'>{errors.image.message}</p>}
         </div>
 
